@@ -26,13 +26,18 @@ must be passed for HCP or Zero-Egress platform types
 
 ```bash
 # Run via OCM backplane (AWS classic clusters)
-ocm backplane managedjob create networking/osdctl-network-verifier
+ocm backplane managedjob create networking/network-verify --cluster-id $CLUSTER_ID
 
-# Check job status
-ocm backplane managedjob list
+# Check job status (wait a few seconds after creation for the job to start)
+ocm backplane managedjob get <job-id>
+# Example: ocm backplane managedjob get openshift-job-wj4l6
 
-# View job logs
+# List all jobs to find your job ID
+ocm backplane managedjob list --cluster-id $CLUSTER_ID
+
+# View job logs (wait for the job to start running before retrieving logs)
 ocm backplane managedjob logs <job-id>
+# Example: ocm backplane managedjob logs openshift-job-wj4l6
 ```
 
 ### Platform-Specific Usage
@@ -41,18 +46,17 @@ The script supports different platform configurations via the `SCRIPT_PARAMETERS
 
 ```bash
 # AWS Classic clusters (default - no parameters needed)
-ocm backplane managedjob create networking/osdctl-network-verifier
+ocm backplane managedjob create networking/network-verify --cluster-id $CLUSTER_ID
 
 # HCP (Hosted Control Plane) clusters
-ocm backplane managedjob create networking/osdctl-network-verifier -p SCRIPT_PARAMETERS="--hcp"
+ocm backplane managedjob create networking/network-verify --cluster-id $CLUSTER_ID -p SCRIPT_PARAMETERS="--hcp"
 
 # HCP clusters with zero egress configuration
-ocm backplane managedjob create networking/osdctl-network-verifier -p SCRIPT_PARAMETERS="--zero-egress"
+ocm backplane managedjob create networking/network-verify --cluster-id $CLUSTER_ID -p SCRIPT_PARAMETERS="--zero-egress"
 
 # Show help and available parameters
-ocm backplane managedjob create networking/osdctl-network-verifier -p SCRIPT_PARAMETERS="--help"
+ocm backplane managedjob create networking/network-verify --cluster-id $CLUSTER_ID -p SCRIPT_PARAMETERS="--help"
 ```
-
 
 ## RBAC Permissions
 
